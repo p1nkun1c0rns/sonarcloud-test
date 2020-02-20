@@ -29,4 +29,4 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Sonar
-        run:  mvn package verify sonar:sonar --file pom.xml
+        run:  mvn package verify sonar:sonar -B --file pom.xml -Dsonar.login=$sonar_login -Dsonar.host=$sonar_host -Dsonar.organization=$sonar_organization -Dsonar.projectKey=$sonar_projectKey
