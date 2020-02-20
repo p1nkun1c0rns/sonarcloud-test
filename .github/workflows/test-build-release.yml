@@ -1,0 +1,38 @@
+name: test-build-release
+on: push
+env:
+  sonar_projectKey: p1nkun1c0rns_sonarcloud-test
+  sonar_organization: p1nkun1c0rns
+  sonar_host: https://sonarcloud.io
+  sonar_login: ${{ secrets.sonar_login }}
+jobs:
+  tests:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Markdown lint
+        uses: actionshub/markdownlint@v1.1.0
+
+      - name: Dockerfile lint
+        uses: burdzwastaken/hadolint-action@1.7.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HADOLINT_ACTION_DOCKERFILE_FOLDER: .
+
+      - name: Setup Gradle
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: '11.0.4' # The JDK version to make available on the path. Takes a whole or semver JDK version, or 1.x syntax (e.g. 1.8 => Jdk 8.x). To specify a specific version for JDK 8 or older use the following pattern (8.0.x)
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Sonar
+        run:  mvn package verify sonar:sonar --file pom.xml
