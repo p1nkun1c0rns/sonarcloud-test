@@ -25,7 +25,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven clean
-        run: ./mvnw clean
+        run: mvn clean
 
       - name: Sonar
         run: >
