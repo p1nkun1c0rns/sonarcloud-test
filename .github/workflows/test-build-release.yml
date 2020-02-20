@@ -1,10 +1,5 @@
 name: test-build-release
 on: push
-env:
-  sonar_projectKey: p1nkun1c0rns_sonarcloud-test
-  sonar_organization: p1nkun1c0rns
-  sonar_host: https://sonarcloud.io
-  sonar_login: ${{ secrets.sonar_login }}
 jobs:
   tests:
     name: Build and Test
@@ -29,4 +24,10 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Sonar
-        run:  mvn package verify sonar:sonar -B --file pom.xml -Dsonar.login=$sonar_login -Dsonar.host=$sonar_host -Dsonar.organization=$sonar_organization -Dsonar.projectKey=$sonar_projectKey
+        run:  mvn package verify -Dorg.slf4j.simpleLogger.defaultLogLevel=warn -B
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.sonar_login }}
