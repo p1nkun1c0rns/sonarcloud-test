@@ -36,4 +36,4 @@ jobs:
           -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.sonar_login }}
