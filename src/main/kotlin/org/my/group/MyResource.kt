@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType
 @Path("/hello")
 class MyResource {
 
+    // TODO: foobar
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     fun hello() = "hello"
